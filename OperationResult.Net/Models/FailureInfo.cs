@@ -8,6 +8,9 @@ namespace OperationResult.Models
     /// </summary>
     public class FailureInfo : ResultInfo
     {
+        /// <summary>
+        ///     The list of errors (exceptions) which have been occured.
+        /// </summary>
         public List<Exception> Errors { get; }
             = new List<Exception>();
     }

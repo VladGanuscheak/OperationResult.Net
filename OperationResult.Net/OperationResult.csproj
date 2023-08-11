@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <PackageId>OperationResult.Net</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>Ganușceac Vlad</Authors>
+    <Product>OperationResult.Net</Product>
+    <Title>OperationResult.Net</Title>
+    <Description>
+      The OperationResult utility
+      1. Implements an unumbiguous functionality for managing operation result by having clear division of both succeeded and failed execution states;
+      2. Provides the posibility to declare operation result in a fluent manner;
+      3. Combines several operation results into a single one.
+    </Description>
+    <RepositoryUrl>https://github.com/VladGanuscheak/GenericRepository.Contracts.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>result;operationresult;fluent;fluentresult;fluentoperationresult;utility;.net;dotnet;c#</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>logo.png</PackageIcon>
+    <PackageIconUrl />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="C:\Users\User\Desktop\Logos\logo.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -10,7 +10,7 @@ namespace OperationResult.Models
         /// <summary>
         ///     Operation Result's code
         /// </summary>
-        public string Code { get; set; }
+        public string Code { get; }
 
         /// <summary>
         ///     The provided messages.

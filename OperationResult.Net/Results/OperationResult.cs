@@ -426,7 +426,7 @@ namespace OperationResult
         ///     Get succeeded Operation Result.
         /// </summary>
         /// <returns>SuccessOperationResult<TData></returns>
-        public static SuccessOperationResult<TData> succeeded(TData data)
+        public static SuccessOperationResult<TData> Succeeded(TData data)
         {
             var operationResult = new SuccessOperationResult<TData>(data);
 
@@ -439,7 +439,7 @@ namespace OperationResult
         /// <param name="successInfo">Required. The model which contains information of Result Code, provided messages 
         /// and additional arguments.</param>
         /// <returns>SuccessOperationResult<TData></returns>
-        public static SuccessOperationResult<TData> succeeded(TData data, [Required] SuccessInfo successInfo)
+        public static SuccessOperationResult<TData> Succeeded(TData data, [Required] SuccessInfo successInfo)
         {
             var operationResult = new SuccessOperationResult<TData>(data, successInfo);
 

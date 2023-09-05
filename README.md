@@ -5,4 +5,4 @@ The OperationResult utility
 2. Provides the posibility to declare operation result in a fluent manner;
 3. Combines several operation results into a single one.
 
-[General picture](https://github.com/VladGanuscheak/OperationResult.Net/blob/documentation/OperationResult.svg)
+![General picture](https://raw.githubusercontent.com/VladGanuscheak/OperationResult.Net/documentation/OperationResult.svg)

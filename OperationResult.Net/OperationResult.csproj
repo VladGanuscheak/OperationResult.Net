@@ -21,6 +21,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>logo.png</PackageIcon>
     <PackageIconUrl />
+    <PackageReleaseNotes>Migrated to .Net Core 2.0</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -41,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Microsoft.NETCore.App" Version="1.1.13" />
+    <PackageReference Update="Microsoft.NETCore.App" Version="2.0.9" />
   </ItemGroup>
 
 </Project>

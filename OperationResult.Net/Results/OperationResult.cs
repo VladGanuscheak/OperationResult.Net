@@ -71,7 +71,7 @@ namespace OperationResult
         ///     Get failed Operation Result.
         /// </summary>
         /// <returns>Failed Operation Result with default values.</returns>
-        public static OperationResult Failed()
+        public static FailureOperationResult Failed()
         {
             var operationResult = new FailureOperationResult();
 
@@ -84,7 +84,7 @@ namespace OperationResult
         /// <param name="failureInfo">Required. The model which contains information of Result Code, provided messages, 
         /// additional arguments and errors.</param>
         /// <returns></returns>
-        public static OperationResult Failed([Required] FailureInfo failureInfo)
+        public static FailureOperationResult Failed([Required] FailureInfo failureInfo)
         {
             var operationResult = new FailureOperationResult(failureInfo);
 

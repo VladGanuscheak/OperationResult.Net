@@ -14,6 +14,7 @@ on:
       - 'releases/*'
 
 jobs:
+  
   setup-dotnet:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -48,7 +49,7 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build OperationResult/OperationResult.csproj --configuration Release
 
     - name: Run Unit Tests
-      run: dotnet test
+      run: dotnet test OperationResult/OperationResult.csproj

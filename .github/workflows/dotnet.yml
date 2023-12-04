@@ -45,7 +45,7 @@ jobs:
 
     env:
       SOLUTION_PATH: 'OperationResult.Net/OperationResult.sln'
-
+      
     steps:
       - name: Cache Dependencies
         uses: actions/cache@v2
@@ -57,14 +57,20 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-
 
+      - name: Debug Repository Contents
+        run: ls -R
+
+      - name: Enter Further
+        run: cd ${{ OperationResult.Net }}
+
+      - name: Debug Final
+        run: ls -R
+
       - name: Restore Dependencies
-        working-directory: ${{ env.SOLUTION_PATH }}
-        run: dotnet restore
+        run: dotnet restore 'OperationResult.sln'
 
       - name: Build
-        working-directory: ${{ env.SOLUTION_PATH }}
-        run: dotnet build --configuration Release
+        run: dotnet build 'OperationResult.sln' --configuration Release
 
       - name: Run Unit Tests
-        working-directory: ${{ env.SOLUTION_PATH }}
-        run: dotnet test
+        run: dotnet test 'OperationResult.sln'

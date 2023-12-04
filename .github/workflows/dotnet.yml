@@ -11,10 +11,8 @@ on:
       - 'releases/*'
 
 jobs:
-  setup-dotnet:
+  build:
     runs-on: ubuntu-latest
-    outputs:
-      id: directory
 
     steps:
       - name: Checkout Repository
@@ -32,36 +30,9 @@ jobs:
         with:
           dotnet-version: ${{ steps.dotnet_version.outputs.version }}
 
-      - name: Set Directory Output
-        id: set-directory
-        run: echo "::set-output name=directory::."
-
-  build:
-    needs: setup-dotnet
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-
-    steps:
-      - name: Cache Dependencies
-        uses: actions/cache@v2
-        with:
-          path: |
-            **/obj/
-            **/bin/
-          key: ${{ runner.os }}-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-
-
-      - name: Restore Dependencies
-        working-directory: ${{ needs.setup-dotnet.outputs.directory }}
-        run: dotnet restore
-
-      - name: Build
-        working-directory: ${{ needs.setup-dotnet.outputs.directory }}
-        run: dotnet build --configuration Release
-
-      - name: Run Unit Tests
-        working-directory: ${{ needs.setup-dotnet.outputs.directory }}
-        run: dotnet test
+      - name: Restore Dependencies, Build, and Test
+        run: |
+          cd OperationResult.Net
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet test

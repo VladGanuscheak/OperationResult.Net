@@ -32,6 +32,7 @@
     <None Include="C:\Users\User\Desktop\Logos\logo.png">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 

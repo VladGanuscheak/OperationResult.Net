@@ -44,7 +44,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     env:
-      SOLUTION_PATH: './OperationResult.Net'
+      SOLUTION_PATH: '.'
 
     steps:
       - name: Cache Dependencies
@@ -57,26 +57,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-
 
-      - name: Debug Repository Contents
-        run: ls -R
-
-      - name: Print Working Directory
-        run: pwd
-
-      - name: Change Directory
-        run: cd ${{ env.SOLUTION_PATH }}
-
-      - name: Debug Repository Contents (after changed directory)
-        run: ls -R
-
       - name: Restore Dependencies
-        working-directory: ${{ env.SOLUTION_PATH }}
         run: dotnet restore
 
       - name: Build
-        working-directory: ${{ env.SOLUTION_PATH }}
         run: dotnet build --configuration Release
 
       - name: Run Unit Tests
-        working-directory: ${{ env.SOLUTION_PATH }}
         run: dotnet test

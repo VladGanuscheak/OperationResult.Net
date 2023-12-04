@@ -1,7 +1,4 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: Build, Test, Cache Dependencies
+name: Build, Test
 
 on:
   push:
@@ -44,7 +41,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     env:
-      SOLUTION_PATH: 'OperationResult/OperationResult.sln'
+      SOLUTION_PATH: './OperationResult.Net/OperationResult.sln'
 
     steps:
       - name: Cache Dependencies
@@ -58,10 +55,10 @@ jobs:
             ${{ runner.os }}-
 
       - name: Restore Dependencies
-        run: dotnet restore ${{ env.SOLUTION_PATH }}
+        run: cd OperationResult.Net && dotnet restore ${{ env.SOLUTION_PATH }}
 
       - name: Build
-        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release
+        run: cd OperationResult.Net && dotnet build ${{ env.SOLUTION_PATH }} --configuration Release
 
       - name: Run Unit Tests
-        run: dotnet test ${{ env.SOLUTION_PATH }}
+        run: cd OperationResult.Net && dotnet test ${{ env.SOLUTION_PATH }}

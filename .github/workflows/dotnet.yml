@@ -44,7 +44,7 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     env:
-      SOLUTION_PATH: 'OperationResult/OperationResult.sln'
+      SOLUTION_PATH: 'OperationResult.Net/OperationResult.sln'
 
     steps:
       - name: Cache Dependencies

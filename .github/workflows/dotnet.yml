@@ -12,7 +12,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
 
     steps:
       - name: Checkout Repository
@@ -30,7 +33,7 @@ jobs:
         with:
           dotnet-version: ${{ steps.dotnet_version.outputs.version }}
 
-      - name: Restore Dependencies, Build, and Test
+      - name: Change Directory and Run Commands
         run: |
           cd OperationResult.Net
           dotnet restore

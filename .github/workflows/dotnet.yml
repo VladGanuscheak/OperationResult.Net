@@ -9,6 +9,7 @@ on:
       - 'main'
       - 'releases/*'
   pull_request:
+    branches:
       - 'main'
       - 'releases/*'
 
@@ -50,5 +51,4 @@ jobs:
       run: dotnet build --configuration Release
 
     - name: Run Unit Tests
-      run: dotnet test
       run: dotnet test

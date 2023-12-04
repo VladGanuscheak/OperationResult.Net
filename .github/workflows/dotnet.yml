@@ -61,7 +61,7 @@ jobs:
         run: ls -R
 
       - name: Enter Further
-        run: cd ${{ OperationResult.Net }}
+        run: cd 'OperationResult.Net'
 
       - name: Debug Final
         run: ls -R

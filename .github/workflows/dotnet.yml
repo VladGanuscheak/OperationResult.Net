@@ -1,7 +1,4 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
-name: Build, Test, Cache Dependencies
+name: Build, Test
 
 on:
   push:
@@ -15,10 +12,9 @@ on:
 
 jobs:
   setup-dotnet:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ubuntu-latest
+    outputs:
+      id: directory
 
     steps:
       - name: Checkout Repository
@@ -36,15 +32,19 @@ jobs:
         with:
           dotnet-version: ${{ steps.dotnet_version.outputs.version }}
 
+      - name: Set Directory Output
+        id: set-directory
+        run: echo "::set-output name=directory::OperationResult.Net"
+
   build:
     needs: setup-dotnet
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
 
     env:
-      SOLUTION_PATH: 'OperationResult/OperationResult.sln'
+      SOLUTION_PATH: './OperationResult.sln'
 
     steps:
       - name: Cache Dependencies
@@ -57,11 +57,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-
 
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Change Directory
+        run: cd 'OperationResult.Net'
+
       - name: Restore Dependencies
-        run: dotnet restore ${{ env.SOLUTION_PATH }}
+        run: dotnet restore ${{ SOLUTION_PATH }}
 
       - name: Build
-        run: dotnet build ${{ env.SOLUTION_PATH }} --configuration Release
+        run: dotnet build ${{ SOLUTION_PATH }} --configuration Release
 
       - name: Run Unit Tests
-        run: dotnet test ${{ env.SOLUTION_PATH }}
+        run: dotnet test ${{ SOLUTION_PATH }}

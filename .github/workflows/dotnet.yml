@@ -57,9 +57,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-
 
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
       - name: Restore Dependencies
         working-directory: ${{ env.SOLUTION_PATH }}
         run: dotnet restore

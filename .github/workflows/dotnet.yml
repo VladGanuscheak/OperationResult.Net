@@ -34,7 +34,7 @@ jobs:
 
       - name: Set Directory Output
         id: set-directory
-        run: echo "::set-output name=directory::OperationResult.Net"
+        run: echo "::set-output name=directory::."
 
   build:
     needs: setup-dotnet
@@ -42,9 +42,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-
-    env:
-      SOLUTION_PATH: 'OperationResult.Net/OperationResult.sln'
 
     steps:
       - name: Cache Dependencies
@@ -58,13 +55,13 @@ jobs:
             ${{ runner.os }}-
 
       - name: Restore Dependencies
-        working-directory: ${{ env.SOLUTION_PATH }}
+        working-directory: ${{ needs.setup-dotnet.outputs.directory }}
         run: dotnet restore
 
       - name: Build
-        working-directory: ${{ env.SOLUTION_PATH }}
+        working-directory: ${{ needs.setup-dotnet.outputs.directory }}
         run: dotnet build --configuration Release
 
       - name: Run Unit Tests
-        working-directory: ${{ env.SOLUTION_PATH }}
+        working-directory: ${{ needs.setup-dotnet.outputs.directory }}
         run: dotnet test

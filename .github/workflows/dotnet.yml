@@ -32,6 +32,8 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ steps.dotnet_version.outputs.version }}
+          include-prerelease: true
+
 
       - name: Change Directory and Run Commands
         run: |

@@ -1,4 +1,4 @@
-name: Build, Test
+name: Build and Test
 
 on:
   push:
@@ -21,12 +21,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Get .NET Core Version
-        run: dotnet --version > dotnet_version.txt
+      - name: Get .NET Version from Project File
+        id: get-dotnet-version
+        run: echo "::set-output name=version::$(grep -oP '<TargetFramework>(.*)<\/TargetFramework>' OperationResult.csproj | grep -oP '\d\.\d')"
 
-      - name: Read .NET Core Version from File
-        id: dotnet_version
-        run: echo "::set-output name=version::$(cat dotnet_version.txt)"
+      - name: Install .NET Core
+        run: |
+          DOTNET_VERSION=${{ steps.dotnet_version.outputs.version }}
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            choco install dotnet-sdk --version $DOTNET_VERSION
+          elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            wget https://download.visualstudio.microsoft.com/download/pr/2157e304-6f7a-4646-8886-05cc0dba157d/4cecdaeec9fd4715d0eee8987f406c21/dotnet-sdk-7.0.404-linux-arm64.tar.gz -O dotnet-sdk.tar.gz
+            mkdir -p $HOME/dotnet
+            tar zxf dotnet-sdk.tar.gz -C $HOME/dotnet
+            export PATH=$HOME/dotnet:$PATH
+          else
+            # Add logic for other operating systems
+            echo "Unsupported OS: ${{ matrix.os }}"
+            exit 1
+          fi
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1

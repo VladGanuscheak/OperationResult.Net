@@ -31,7 +31,7 @@ jobs:
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
             choco install dotnet-sdk --version $DOTNET_VERSION
           elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-            wget https://download.visualstudio.microsoft.com/download/pr/2157e304-6f7a-4646-8886-05cc0dba157d/4cecdaeec9fd4715d0eee8987f406c21/dotnet-sdk-7.0.404-linux-arm64.tar.gz
+            wget https://download.visualstudio.microsoft.com/download/pr/2157e304-6f7a-4646-8886-05cc0dba157d/4cecdaeec9fd4715d0eee8987f406c21/dotnet-sdk-7.0.404-linux-arm64.tar.gz -O dotnet-sdk.tar.gz
             mkdir -p $HOME/dotnet
             tar zxf dotnet-sdk.tar.gz -C $HOME/dotnet
             export PATH=$HOME/dotnet:$PATH

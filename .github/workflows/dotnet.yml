@@ -1,4 +1,4 @@
-name: Build, Test
+name: Build and Test
 
 on:
   push:
@@ -28,12 +28,22 @@ jobs:
         id: dotnet_version
         run: echo "::set-output name=version::$(cat dotnet_version.txt)"
 
+      - name: Install .NET Core
+        run: |
+          DOTNET_VERSION=${{ steps.dotnet_version.outputs.version }}
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            choco install dotnet-sdk --version $DOTNET_VERSION
+          else
+            wget https://download.visualstudio.microsoft.com/download/pr/9d113630-50fd-4e98-bf16-52d347ab3db5/f68fbac8a6a3ed2a32f0270d10d44d22/dotnet-sdk-$DOTNET_VERSION-linux-x64.tar.gz
+            mkdir -p $HOME/dotnet
+            tar zxf dotnet-sdk-$DOTNET_VERSION-linux-x64.tar.gz -C $HOME/dotnet
+            export PATH=$HOME/dotnet:$PATH
+          fi
+
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ steps.dotnet_version.outputs.version }}
-          include-prerelease: true
-
 
       - name: Change Directory and Run Commands
         run: |

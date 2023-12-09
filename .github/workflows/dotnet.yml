@@ -21,23 +21,24 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Get .NET Core Version
-        run: dotnet --version > dotnet_version.txt
-
-      - name: Read .NET Core Version from File
-        id: dotnet_version
-        run: echo "::set-output name=version::$(cat dotnet_version.txt)"
+      - name: Get .NET Version from Project File
+        id: get-dotnet-version
+        run: echo "::set-output name=version::$(grep -oP '<TargetFramework>(.*)<\/TargetFramework>' OperationResult.csproj | grep -oP '\d\.\d')"
 
       - name: Install .NET Core
         run: |
           DOTNET_VERSION=${{ steps.dotnet_version.outputs.version }}
           if [ "${{ matrix.os }}" == "windows-latest" ]; then
             choco install dotnet-sdk --version $DOTNET_VERSION
-          else
-            wget https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/sdk-7.0.404-linux-arm64-binaries
+          elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            wget https://dotnet.microsoft.com/download/dotnet/thank-you/sdk-$DOTNET_VERSION-linux-arm64-binaries -O dotnet-sdk.tar.gz
             mkdir -p $HOME/dotnet
-            tar zxf dotnet-sdk-$DOTNET_VERSION-linux-x64.tar.gz -C $HOME/dotnet
+            tar zxf dotnet-sdk.tar.gz -C $HOME/dotnet
             export PATH=$HOME/dotnet:$PATH
+          else
+            # Add logic for other operating systems
+            echo "Unsupported OS: ${{ matrix.os }}"
+            exit 1
           fi
 
       - name: Setup .NET Core

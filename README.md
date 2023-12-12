@@ -1,9 +1,5 @@
 # OperationResult.Net
 
-[![Build, Test](https://github.com/VladGanuscheak/OperationResult.Net/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/VladGanuscheak/OperationResult.Net/actions/workflows/dotnet.yml)
-
-[![Code Vulnerability Check](https://github.com/VladGanuscheak/OperationResult.Net/actions/workflows/vulnerability_check.yml/badge.svg)](https://github.com/VladGanuscheak/OperationResult.Net/actions/workflows/vulnerability_check.yml)
-
 The OperationResult utility
 1. Implements an unumbiguous functionality for managing operation result by having clear division of both succeeded and failed execution states;
 2. Provides the posibility to declare operation result in a fluent manner;

@@ -39,14 +39,25 @@ namespace OperationResult.Results
         ///     Adds the specified errors (exceptions) to the corresponding Operation Result's collection.
         ///     Ensures that the collection is not empty.
         /// </summary>
-        /// <exception cref="ArgumentException">Throws ArgumentException when the provided collection of exceptions is empty.</exception>
+        /// <exception cref="ArgumentException">Throws ArgumentException when the provided collection of exceptions is empty or at least one of its items is null.</exception>
+        /// <exception cref="ArgumentNullException">Throws ArgumentNullException when the provided collection of exceptions is null.</exception>
         /// <param name="exceptions">Required. The list of exceptions.</param>
         /// <returns>FailureOperationResult</returns>
         public FailureOperationResult WithErrors([Required] List<Exception> exceptions)
         {
+            if (exceptions == null)
+            {
+                throw new ArgumentNullException(nameof(exceptions));
+            }
+
             if (!exceptions.Any())
             {
-                throw new ArgumentException();
+                throw new ArgumentException(nameof(exceptions));
+            }
+
+            if (exceptions.Any(x => x is null))
+            {
+                throw new ArgumentNullException(nameof(exceptions));
             }
 
             Errors.AddRange(exceptions);
@@ -59,9 +70,17 @@ namespace OperationResult.Results
         ///     Ensures that the collection is not empty.
         /// </summary>
         /// <param name="exception">Required. The specified exception.</param>
+        /// <exception cref="ArgumentNullException"></exception>
         /// <returns>FailureOperationResult</returns>
         public FailureOperationResult WithError([Required] Exception exception)
-            => WithErrors(new List<Exception> { exception });
+        {
+            if (exception == null)
+            {
+                throw new ArgumentNullException(nameof(exception));
+            }
+
+            return WithErrors(new List<Exception> { exception });
+        }
     }
 
     public class FailureOperationResult<TData> : OperationResult<TData>
@@ -79,7 +98,7 @@ namespace OperationResult.Results
         /// <param name="failureInfo">Required. The information about the Failed Operation Result.</param>
         public FailureOperationResult(
             [Required] FailureInfo failureInfo)
-                : base()
+                : base(failureInfo)
         {
             if (failureInfo.Errors?.Any() ?? false)
             {
@@ -102,9 +121,19 @@ namespace OperationResult.Results
         /// <returns>FailureOperationResult<TData></returns>
         public FailureOperationResult<TData> WithErrors([Required] List<Exception> exceptions)
         {
+            if (exceptions == null)
+            {
+                throw new ArgumentNullException(nameof(exceptions));
+            }
+
             if (!exceptions.Any())
             {
-                throw new ArgumentException();
+                throw new ArgumentException(nameof(exceptions));
+            }
+
+            if (exceptions.Any(x => x is null))
+            {
+                throw new ArgumentNullException(nameof(exceptions));
             }
 
             Errors.AddRange(exceptions);

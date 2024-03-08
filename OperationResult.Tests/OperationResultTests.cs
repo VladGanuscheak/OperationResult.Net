@@ -35,7 +35,7 @@ namespace OperationResult.Tests
         public void Succeeded_WithInfo_ShouldCreateSuccessOperationResultWithInfo()
         {
             // Arrange
-            var successInfo = new SuccessInfo();
+            var successInfo = new SuccessInfo("200");
 
             // Act
             var result = OperationResult.Succeeded(successInfo);
@@ -60,7 +60,7 @@ namespace OperationResult.Tests
         public void Failed_WithInfo_ShouldCreateFailureOperationResultWithInfo()
         {
             // Arrange
-            var failureInfo = new FailureInfo();
+            var failureInfo = new FailureInfo("400");
 
             // Act
             var result = OperationResult.Failed(failureInfo);
@@ -111,10 +111,6 @@ namespace OperationResult.Tests
             Assert.Equal(messages, resultWithMessages.Messages);
         }
 
-
-        //
-        // Second set of tests
-        //
 
         [Fact]
         public void WithMessage_ShouldAddMessage()
@@ -197,8 +193,6 @@ namespace OperationResult.Tests
             Assert.Equal(exceptions, resultWithErrors.Errors);
         }
 
-        // ANother set of tests
-
         [Fact]
         public void Combine_WithTwoSuccessResults_ShouldReturnCombinedSuccessResult()
         {
@@ -229,15 +223,15 @@ namespace OperationResult.Tests
             Assert.True(combinedResult.HasFailed);
         }
 
-        //[Fact]
-        //public void WithArguments_WithNullArguments_ShouldThrowArgumentNullException()
-        //{
-        //    // Arrange
-        //    var result = OperationResult.Succeeded();
+        [Fact]
+        public void WithArguments_WithNullArguments_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            var result = OperationResult.Succeeded();
 
-        //    // Act & Assert
-        //    Assert.Throws<ArgumentNullException>(() => result.WithArguments(null));
-        //}
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => result.WithArguments(null));
+        }
 
         [Fact]
         public void WithArgument_WithNullKey_ShouldThrowArgumentNullException()
@@ -249,28 +243,16 @@ namespace OperationResult.Tests
             Assert.Throws<ArgumentNullException>(() => result.WithArgument(null, "value"));
         }
 
-        //[Fact]
-        //public void WithArgument_WithExistingKey_ShouldUpdateExistingArgument()
-        //{
-        //    // Arrange
-        //    var result = OperationResult.Succeeded().WithArgument("Key", "OldValue");
 
-        //    // Act
-        //    var resultWithUpdatedArgument = result.WithArgument("Key", "NewValue");
+        [Fact]
+        public void WithError_WithNullError_ShouldThrowArgumentNullException()
+        {
+            // Arrange
+            var failureResult = OperationResult.Failed();
 
-        //    // Assert
-        //    Assert.Equal("NewValue", resultWithUpdatedArgument.Arguments["Key"]);
-        //}
-
-        //[Fact]
-        //public void WithError_WithNullError_ShouldThrowArgumentNullException()
-        //{
-        //    // Arrange
-        //    var failureResult = OperationResult.Failed();
-
-        //    // Act & Assert
-        //    Assert.Throws<ArgumentNullException>(() => failureResult.WithError(null));
-        //}
+            // Act & Assert
+            Assert.Throws<ArgumentNullException>(() => failureResult.WithError(null));
+        }
 
         [Fact]
         public void WithErrors_WithNullErrors_ShouldThrowArgumentNullException()
@@ -281,20 +263,6 @@ namespace OperationResult.Tests
             // Act & Assert
             Assert.Throws<ArgumentNullException>(() => failureResult.WithErrors(null));
         }
-
-        //
-        // Another set of tests
-        //
-
-        //[Fact]
-        //public void WithMessages_WithNullMessages_ShouldThrowArgumentNullException()
-        //{
-        //    // Arrange
-        //    var result = OperationResult.Succeeded();
-
-        //    // Act & Assert
-        //    Assert.Throws<ArgumentNullException>(() => result.WithMessages(null));
-        //}
 
         [Fact]
         public void WithMessage_WithNullMessage_ShouldThrowArgumentNullException()
@@ -347,22 +315,6 @@ namespace OperationResult.Tests
             Assert.Equal(exceptions, ((FailureOperationResult)resultWithCode).Errors);
         }
 
-        //
-        // Another set of tests
-        //
-
-        //[Fact]
-        //public void WithArguments_WithEmptyArguments_ShouldSetEmptyArguments()
-        //{
-        //    // Arrange
-        //    var result = OperationResult.Succeeded();
-
-        //    // Act
-        //    var resultWithEmptyArguments = result.WithArguments(new Dictionary<string, object>());
-
-        //    // Assert
-        //    Assert.Empty(resultWithEmptyArguments.Arguments);
-        //}
 
         [Fact]
         public void WithArgument_WithNewArgument_ShouldAddArgument()
@@ -403,35 +355,6 @@ namespace OperationResult.Tests
             Assert.Throws<ArgumentException>(() => result.WithMessage(""));
         }
 
-        //[Fact]
-        //public void WithMessagesWithMessages_WithEmptyMessages_ShouldThrowArgumentException()
-        //{
-        //    // Arrange
-        //    var result = OperationResult.Succeeded();
-
-        //    // Act & Assert
-        //    Assert.Throws<ArgumentException>(() => result.WithMessages(new List<string>()));
-        //}
-
-        //
-        // Another tests
-        //
-
-
-        //[Fact]
-        //public void Combine_WithTwoFailureResults_ShouldReturnCombinedFailureResultWithErrors()
-        //{
-        //    // Arrange
-        //    var failureResult1 = OperationResult.Failed();
-        //    var failureResult2 = OperationResult.Failed();
-
-        //    // Act
-        //    var combinedResult = failureResult1.Combine(failureResult2);
-
-        //    // Assert
-        //    Assert.IsType<FailureOperationResult>(combinedResult);
-        //    Assert.True(combinedResult.HasFailed);
-        //}
 
         [Fact]
         public void Combine_WithSuccessResultAndFailureResult_ShouldReturnCombinedFailureResultWithErrors()
@@ -457,15 +380,5 @@ namespace OperationResult.Tests
             // Act & Assert
             Assert.Throws<ArgumentException>(() => failureResult.WithErrors(new List<Exception>()));
         }
-
-        //[Fact]
-        //public void WithArgument_WithEmptyKey_ShouldThrowArgumentException()
-        //{
-        //    // Arrange
-        //    var result = OperationResult.Succeeded();
-
-        //    // Act & Assert
-        //    Assert.Throws<ArgumentException>(() => result.WithArgument("", "Value"));
-        //}
     }
 }

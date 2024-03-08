@@ -129,7 +129,7 @@ namespace OperationResult
         ///     The provided messages.
         /// </summary>
         public List<string> Messages { get; }
-            = new List<string>();
+            = [];
 
         /// <summary>
         ///     Additional Arguments of the operation result. 
@@ -137,7 +137,7 @@ namespace OperationResult
         ///     the key of type "string" and the value which is an object.
         /// </summary>
         public Dictionary<string, object> Arguments { get; }
-            = new Dictionary<string, object>();
+            = [];
 
         /// <summary>
         ///     Checks if the operation result has succeeded. 
@@ -274,7 +274,7 @@ namespace OperationResult
         /// <param name="message">Required. The message.</param>
         /// <returns>OperationResult</returns>
         public OperationResult WithMessage([Required] string message)
-            => WithMessages(new List<string> { message });
+            => WithMessages([message]);
 
         /// <summary>
         ///     Adds the specified arguments (metadata) to the corresponding Operation Result's collection.
@@ -337,12 +337,9 @@ namespace OperationResult
         #endregion
 
         #region Private methods
-        private void EnsureNotEmptyArgument(string input)
+        private static void EnsureNotEmptyArgument(string input)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException();
-            }
+            ArgumentNullException.ThrowIfNull(input);
 
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -546,7 +543,7 @@ namespace OperationResult
         /// <param name="message">Required. The message.</param>
         /// <returns>OperationResult</returns>
         public new OperationResult<TData> WithMessage([Required] string message)
-            => WithMessages(new List<string> { message });
+            => WithMessages([message]);
 
         /// <summary>
         ///     Adds the specified arguments (metadata) to the corresponding Operation Result's collection.

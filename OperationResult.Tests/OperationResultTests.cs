@@ -378,7 +378,7 @@ namespace OperationResult.Tests
             var failureResult = OperationResult.Failed();
 
             // Act & Assert
-            Assert.Throws<ArgumentException>(() => failureResult.WithErrors(new List<Exception>()));
+            Assert.Throws<ArgumentException>(() => failureResult.WithErrors([]));
         }
     }
 }

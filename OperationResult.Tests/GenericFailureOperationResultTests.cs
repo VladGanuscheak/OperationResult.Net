@@ -6,7 +6,7 @@ namespace OperationResult.Tests
     {
         #region Common
 
-        private void CommonPrecheck<T>(FailureOperationResult<T> failureOperationResult)
+        private static void CommonPrecheck<T>(FailureOperationResult<T> failureOperationResult)
         {
             // Assert
             Assert.False(failureOperationResult.HasSucceeded);
@@ -15,7 +15,7 @@ namespace OperationResult.Tests
             Assert.NotNull(failureOperationResult.Arguments);
         }
 
-        private void CommonPrecheck<T>(OperationResult<T> failureOperationResult)
+        private static void CommonPrecheck<T>(OperationResult<T> failureOperationResult)
         {
             // Assert
             Assert.False(failureOperationResult.HasSucceeded);
@@ -49,7 +49,7 @@ namespace OperationResult.Tests
             var firstFailureOperationResult = new FailureOperationResult<long>(new Models.FailureInfo(firstFailureCode));
             var secondFailureOperationResult = new FailureOperationResult<long>(new Models.FailureInfo(secondFailureCode, new List<string> { "failed!" }));
             var thirdFailureOperationResult = new FailureOperationResult<long>(new Models.FailureInfo(thirdFailureCode, new Dictionary<string, object> { { "key", 1 } }));
-            var fourthFailureOperationResult = new FailureOperationResult<long>(new Models.FailureInfo(fourthFailureCode, new List<string> { "failed" }, new Dictionary<string, object> { { "key", 2 } }));
+            var fourthFailureOperationResult = new FailureOperationResult<long>(new Models.FailureInfo(fourthFailureCode, ["failed"], new Dictionary<string, object> { { "key", 2 } }));
 
             CommonPrecheck(firstFailureOperationResult);
             Assert.Equal(firstFailureCode, firstFailureOperationResult.Code);
@@ -140,7 +140,7 @@ namespace OperationResult.Tests
         {
             // Arrange
             var firstFailureMessage = "Failed!";
-            string invalidFailureMessage = null;
+            string invalidFailureMessage = null!;
             var failureOperationResult = new FailureOperationResult<string>();
 
             // Assert
@@ -236,7 +236,7 @@ namespace OperationResult.Tests
         {
             // Arrange
             var value = 20;
-            KeyValuePair<string, object> keyValuePair = new KeyValuePair<string, object>("key", value);
+            KeyValuePair<string, object> keyValuePair = new("key", value);
             var failureOperationResult = new FailureOperationResult<string>()
                 .WithArgument(keyValuePair);
 
@@ -276,13 +276,15 @@ namespace OperationResult.Tests
         public void FailureOperationResult_NoGenericWithArguments_True()
         {
             // Arrange
-            KeyValuePair<string, object> firstKeyValuePair = new KeyValuePair<string, object>("key", 20);
-            KeyValuePair<string, object> secondKeyValuePair = new KeyValuePair<string, object>("key2", 25);
-            var dictionary = new Dictionary<string, object>();
+            KeyValuePair<string, object> firstKeyValuePair = new("key", 20);
+            KeyValuePair<string, object> secondKeyValuePair = new("key2", 25);
+            var dictionary = new Dictionary<string, object>
+            {
+                { "key", 20 },
+                { "key2", 25 }
+            };
 
             // Act
-            dictionary.Add("key", 20);
-            dictionary.Add("key2", 25);
             var failureOperationResult = new FailureOperationResult<int>()
                 .WithArguments(dictionary);
 
@@ -300,7 +302,7 @@ namespace OperationResult.Tests
 
             // Assert
             CommonPrecheck(failureOperationResult);
-            Assert.Throws<ArgumentException>(() => failureOperationResult.WithArguments(new Dictionary<string, object>()));
+            Assert.Throws<ArgumentException>(() => failureOperationResult.WithArguments([]));
         }
 
         [Fact]
@@ -395,7 +397,7 @@ namespace OperationResult.Tests
 
             // Assert
             CommonPrecheck(failureOperationResult);
-            Assert.Throws<ArgumentNullException>(() => failureOperationResult.WithErrors(new List<Exception> { default! }));
+            Assert.Throws<ArgumentNullException>(() => failureOperationResult.WithErrors([default!]));
         }
 
         #endregion

@@ -33,7 +33,7 @@ namespace OperationResult.Results
         ///     The list of errors (exceptions) which have been occured.
         /// </summary>
         public List<Exception> Errors { get; }
-            = new List<Exception>();
+            = [];
 
         /// <summary>
         ///     Adds the specified errors (exceptions) to the corresponding Operation Result's collection.
@@ -45,10 +45,7 @@ namespace OperationResult.Results
         /// <returns>FailureOperationResult</returns>
         public FailureOperationResult WithErrors([Required] List<Exception> exceptions)
         {
-            if (exceptions == null)
-            {
-                throw new ArgumentNullException(nameof(exceptions));
-            }
+            ArgumentNullException.ThrowIfNull(exceptions);
 
             if (!exceptions.Any())
             {
@@ -74,12 +71,9 @@ namespace OperationResult.Results
         /// <returns>FailureOperationResult</returns>
         public FailureOperationResult WithError([Required] Exception exception)
         {
-            if (exception == null)
-            {
-                throw new ArgumentNullException(nameof(exception));
-            }
+            ArgumentNullException.ThrowIfNull(exception);
 
-            return WithErrors(new List<Exception> { exception });
+            return WithErrors([exception]);
         }
     }
 
@@ -110,7 +104,7 @@ namespace OperationResult.Results
         ///     The list of errors (exceptions) which have been occured.
         /// </summary>
         public List<Exception> Errors { get; }
-            = new List<Exception>();
+            = [];
 
         /// <summary>
         ///     Adds the specified errors (exceptions) to the corresponding Operation Result's collection.
@@ -121,10 +115,7 @@ namespace OperationResult.Results
         /// <returns>FailureOperationResult<TData></returns>
         public FailureOperationResult<TData> WithErrors([Required] List<Exception> exceptions)
         {
-            if (exceptions == null)
-            {
-                throw new ArgumentNullException(nameof(exceptions));
-            }
+            ArgumentNullException.ThrowIfNull(exceptions);
 
             if (!exceptions.Any())
             {
@@ -148,7 +139,7 @@ namespace OperationResult.Results
         /// <param name="exception">Required. The specified exception.</param>
         /// <returns>FailureOperationResult<TData></returns>
         public FailureOperationResult<TData> WithError([Required] Exception exception)
-            => WithErrors(new List<Exception> { exception });
+            => WithErrors([exception]);
 
         #region Fluent Operation's Result
         /// <summary>
@@ -191,7 +182,7 @@ namespace OperationResult.Results
         /// <param name="message">Required. The message.</param>
         /// <returns>FailureOperationResult<TData></returns>
         public new FailureOperationResult<TData> WithMessage([Required] string message)
-            => WithMessages(new List<string> { message });
+            => WithMessages([message]);
 
         /// <summary>
         ///     Adds the specified arguments (metadata) to the corresponding Operation Result's collection.

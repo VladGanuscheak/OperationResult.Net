@@ -12,7 +12,7 @@ namespace OperationResult.Tests
     {
         #region Common
 
-        private void CommonPrecheck<T>(SuccessOperationResult<T> successOperationResult)
+        private static void CommonPrecheck<T>(SuccessOperationResult<T> successOperationResult)
         {
             // Assert
             Assert.True(successOperationResult.HasSucceeded);
@@ -21,7 +21,7 @@ namespace OperationResult.Tests
             Assert.NotNull(successOperationResult.Arguments);
         }
 
-        private void CommonPrecheck<T>(OperationResult<T> successOperationResult)
+        private static void CommonPrecheck<T>(OperationResult<T> successOperationResult)
         {
             // Assert
             Assert.True(successOperationResult.HasSucceeded);
@@ -56,7 +56,7 @@ namespace OperationResult.Tests
             var firstSuccessOperationResult = new SuccessOperationResult<int>(1 ,new Models.SuccessInfo(firstSuccessCode));
             var secondSuccessOperationResult = new SuccessOperationResult<int>(2, new Models.SuccessInfo(secondSuccessCode, new List<string> { "succeeded!" }));
             var thirdSuccessOperationResult = new SuccessOperationResult<int>(3, new Models.SuccessInfo(thirdSuccessCode, new Dictionary<string, object> { { "key", 1 } }));
-            var fourthSuccessOperationResult = new SuccessOperationResult<int>(4, new Models.SuccessInfo(fourthSuccessCode, new List<string> { "successful" }, new Dictionary<string, object> { { "key", 2 } }));
+            var fourthSuccessOperationResult = new SuccessOperationResult<int>(4, new Models.SuccessInfo(fourthSuccessCode, ["successful"], new Dictionary<string, object> { { "key", 2 } }));
 
             CommonPrecheck(firstSuccessOperationResult);
             Assert.Equal(firstSuccessCode, firstSuccessOperationResult.Code);
@@ -158,7 +158,7 @@ namespace OperationResult.Tests
         {
             // Arrange
             var firstSuccessMessage = "Succeeded!";
-            string invalidSuccessMessage = null;
+            string invalidSuccessMessage = null!;
             var successOperationResult = new SuccessOperationResult<int>();
 
             // Assert
@@ -254,7 +254,7 @@ namespace OperationResult.Tests
         {
             // Arrange
             var value = 20;
-            KeyValuePair<string, object> keyValuePair = new KeyValuePair<string, object>("key", value);
+            KeyValuePair<string, object> keyValuePair = new("key", value);
             var successOperationResult = new SuccessOperationResult<int>()
                 .WithArgument(keyValuePair);
 
@@ -294,13 +294,15 @@ namespace OperationResult.Tests
         public void SuccessOperationResult_NoGenericWithArguments_True()
         {
             // Arrange
-            KeyValuePair<string, object> firstKeyValuePair = new KeyValuePair<string, object>("key", 20);
-            KeyValuePair<string, object> secondKeyValuePair = new KeyValuePair<string, object>("key2", 25);
-            var dictionary = new Dictionary<string, object>();
+            KeyValuePair<string, object> firstKeyValuePair = new("key", 20);
+            KeyValuePair<string, object> secondKeyValuePair = new("key2", 25);
+            var dictionary = new Dictionary<string, object>
+            {
+                { "key", 20 },
+                { "key2", 25 }
+            };
 
             // Act
-            dictionary.Add("key", 20);
-            dictionary.Add("key2", 25);
             var successOperationResult = new SuccessOperationResult<int>()
                 .WithArguments(dictionary);
 
@@ -318,7 +320,7 @@ namespace OperationResult.Tests
 
             // Assert
             CommonPrecheck(successOperationResult);
-            Assert.Throws<ArgumentException>(() => successOperationResult.WithArguments(new Dictionary<string, object>()));
+            Assert.Throws<ArgumentException>(() => successOperationResult.WithArguments([]));
         }
 
         [Fact]

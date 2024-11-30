@@ -26,11 +26,9 @@ jobs:
         with:
           dotnet-version: '9.0.x' # Specify .NET 9 SDK version
 
-      - name: Install Dependencies
-        run: dotnet restore
-
-      - name: Build
-        run: dotnet build --configuration Release
-
-      - name: Test
-        run: dotnet test --configuration Release --no-build
+      - name: Change Directory and Run Commands
+        run: |
+          cd OperationResult.Net
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet test

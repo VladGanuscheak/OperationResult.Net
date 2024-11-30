@@ -16,7 +16,7 @@ namespace OperationResult.Models
         ///     The provided messages.
         /// </summary>
         public List<string> Messages { get; }
-            = new List<string>();
+            = [];
 
         /// <summary>
         ///     Additional Arguments of the operation result. 
@@ -24,14 +24,14 @@ namespace OperationResult.Models
         ///     the key of type "string" and the value which is an object.
         /// </summary>
         public Dictionary<string, object> Arguments { get; }
-            = new Dictionary<string, object>();
+            = [];
 
         public ResultInfo(string code)
         {
             Code = code;
         }
 
-        public ResultInfo(
+        protected ResultInfo(
             string code,
             List<string> messages)
         {
@@ -39,7 +39,7 @@ namespace OperationResult.Models
             Messages = messages;
         }
 
-        public ResultInfo(
+        protected ResultInfo(
             string code,
             Dictionary<string, object> arguments)
         {
@@ -47,7 +47,7 @@ namespace OperationResult.Models
             Arguments = arguments;
         }
 
-        public ResultInfo(
+        protected ResultInfo(
             string code,
             List<string> messages,
             Dictionary<string, object> arguments)

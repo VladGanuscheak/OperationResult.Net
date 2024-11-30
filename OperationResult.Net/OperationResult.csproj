@@ -1,9 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <PackageId>OperationResult.Net</PackageId>
-    <Version>8.0.1</Version>
+    <Version>9.0.0</Version>
     <Authors>Ganușceac Vlad</Authors>
     <Product>OperationResult.Net</Product>
     <Title>OperationResult.Net</Title>
@@ -21,7 +21,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageIcon>logo.png</PackageIcon>
     <PackageIconUrl />
-    <PackageReleaseNotes>Adjusted according to the latest standards of .Net Core 8.0. Solved small issues.</PackageReleaseNotes>
+    <PackageReleaseNotes>Upgraded to .Net Core 9.0</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

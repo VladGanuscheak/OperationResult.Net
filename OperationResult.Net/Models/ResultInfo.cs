@@ -26,7 +26,7 @@ namespace OperationResult.Models
         public Dictionary<string, object> Arguments { get; }
             = [];
 
-        public ResultInfo(string code)
+        protected ResultInfo(string code)
         {
             Code = code;
         }

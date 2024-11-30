@@ -129,7 +129,7 @@ namespace OperationResult
         ///     The provided messages.
         /// </summary>
         public List<string> Messages { get; }
-            = new List<string>();
+            = [];
 
         /// <summary>
         ///     Additional Arguments of the operation result. 
@@ -137,7 +137,7 @@ namespace OperationResult
         ///     the key of type "string" and the value which is an object.
         /// </summary>
         public Dictionary<string, object> Arguments { get; }
-            = new Dictionary<string, object>();
+            = [];
 
         /// <summary>
         ///     Checks if the operation result has succeeded. 
@@ -185,17 +185,43 @@ namespace OperationResult
                 else
                 {
                     var firstFailure = this as FailureOperationResult;
-                    var secondFailure = operationResult as FailureOperationResult;
+                    dynamic secondFailure = operationResult;
 
                     var failureResult = new FailureOperationResult();
 
-                    failureResult.WithErrors(firstFailure.Errors)
-                        .WithErrors(secondFailure.Errors)
-                        .WithCode(firstFailure.Code)
-                        .WithArguments(firstFailure.Arguments)
-                        .WithMessages(firstFailure.Messages)
-                        .WithArguments(secondFailure.Arguments)
-                        .WithMessages(secondFailure.Messages);
+                    if (firstFailure.Errors.Any())
+                    {
+                        failureResult.WithErrors(firstFailure.Errors);
+                    }
+
+                    if (((List<Exception>)secondFailure.Errors).Any())
+                    {
+                        failureResult.WithErrors(secondFailure.Errors as List<Exception>);
+                    }
+
+                    failureResult.WithCode(firstFailure.Code);
+
+                    if (firstFailure.Arguments.Any())
+                    {
+                        failureResult.WithArguments(firstFailure.Arguments);
+                    }
+
+                    if (((Dictionary<string, object>)secondFailure.Arguments).Any())
+                    {
+                        failureResult.WithArguments(secondFailure.Arguments as Dictionary<string, object>);
+                    }
+
+                    if (firstFailure.Messages.Any())
+                    {
+                        failureResult.WithMessages(firstFailure.Messages);
+                    }
+                        
+                    if (((List<string>)secondFailure.Messages).Any())
+                    {
+                        failureResult.WithMessages(secondFailure.Messages as List<string>);
+                    }
+
+                    failureResult.WithCode(firstFailure.Code);
 
                     return failureResult;
                 }
@@ -248,7 +274,7 @@ namespace OperationResult
         /// <param name="message">Required. The message.</param>
         /// <returns>OperationResult</returns>
         public OperationResult WithMessage([Required] string message)
-            => WithMessages(new List<string> { message });
+            => WithMessages([message]);
 
         /// <summary>
         ///     Adds the specified arguments (metadata) to the corresponding Operation Result's collection.
@@ -262,16 +288,18 @@ namespace OperationResult
         /// <returns>OperationResult</returns>
         public OperationResult WithArguments([Required] Dictionary<string, object> arguments)
         {
+            ArgumentNullException.ThrowIfNull(arguments);
+
             if (arguments.Count == 0)
             {
-                throw new ArgumentException();
+                throw new ArgumentException(nameof(arguments));
             }
 
             foreach(var argument in arguments)
             {
                 if (Arguments.ContainsKey(argument.Key))
                 {
-                    throw new ArgumentException();
+                    throw new ArgumentException(nameof(argument.Key));
                 }
 
                 Arguments.Add(argument.Key, argument.Value);
@@ -290,8 +318,10 @@ namespace OperationResult
         /// <returns>OperationResult</returns>
         public OperationResult WithArgument([Required] string key, object value)
         {
-            var dictionary = new Dictionary<string, object>();
-            dictionary.Add(key, value);
+            var dictionary = new Dictionary<string, object>
+            {
+                { key, value }
+            };
             return WithArguments(dictionary);
         }
 
@@ -307,12 +337,9 @@ namespace OperationResult
         #endregion
 
         #region Private methods
-        private void EnsureNotEmptyArgument(string input)
+        private static void EnsureNotEmptyArgument(string input)
         {
-            if (input == null)
-            {
-                throw new ArgumentNullException();
-            }
+            ArgumentNullException.ThrowIfNull(input);
 
             if (string.IsNullOrWhiteSpace(input))
             {
@@ -516,7 +543,7 @@ namespace OperationResult
         /// <param name="message">Required. The message.</param>
         /// <returns>OperationResult</returns>
         public new OperationResult<TData> WithMessage([Required] string message)
-            => WithMessages(new List<string> { message });
+            => WithMessages([message]);
 
         /// <summary>
         ///     Adds the specified arguments (metadata) to the corresponding Operation Result's collection.

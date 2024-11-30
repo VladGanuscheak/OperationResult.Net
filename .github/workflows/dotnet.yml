@@ -15,36 +15,16 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Get .NET Version from Project File
-        id: get-dotnet-version
-        run: echo "::set-output name=version::$(grep -oP '<TargetFramework>(.*)<\/TargetFramework>' OperationResult.csproj | grep -oP '\d\.\d')"
-
-      - name: Install .NET Core
-        run: |
-          DOTNET_VERSION=${{ steps.dotnet_version.outputs.version }}
-          if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            choco install dotnet-sdk --version $DOTNET_VERSION
-          elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-            wget https://download.visualstudio.microsoft.com/download/pr/2157e304-6f7a-4646-8886-05cc0dba157d/4cecdaeec9fd4715d0eee8987f406c21/dotnet-sdk-7.0.404-linux-arm64.tar.gz -O dotnet-sdk.tar.gz
-            mkdir -p $HOME/dotnet
-            tar zxf dotnet-sdk.tar.gz -C $HOME/dotnet
-            export PATH=$HOME/dotnet:$PATH
-          else
-            # Add logic for other operating systems
-            echo "Unsupported OS: ${{ matrix.os }}"
-            exit 1
-          fi
-
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: ${{ steps.dotnet_version.outputs.version }}
+          dotnet-version: '9.0.x' # Specify .NET 9 SDK version
 
       - name: Change Directory and Run Commands
         run: |
